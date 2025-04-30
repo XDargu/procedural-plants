@@ -5,30 +5,54 @@
 */
 const presets = [
     {
-        axiom: 'X',
+        axiom: 'F',
         rules: [
-            ['F', 'FF'],
-            ['X', 'F+[-F-XF-X][+FF][--XF[+X]][++F-X]'],
-        ]
-    },
-    {
-        axiom: 'FX',
-        rules: [
-            ['F', 'FF+[+F-F-F]-[-F+F+F]'],
+            { symbol: 'F', odds: 0.33, newSymbols: 'F[+F]F[-F][F]' },
+            { symbol: 'F', odds: 0.33, newSymbols: 'F[+F][F]' },
+            { symbol: 'F', odds: 0.34, newSymbols: 'F[-F][F]' },
         ]
     },
     {
         axiom: 'X',
         rules: [
-            ['F', 'FX[FX[+XF]]'],
-            ['X', 'FF[+XZ++X-F[+ZX]][-X++F-X]'],
-            ['Z', '[+F-X-F][++ZX]'],
+            { symbol: 'F', odds: 1.0, newSymbols: 'FF' },
+            { symbol: 'X', odds: 1.0, newSymbols: 'F+[-F-XF-X][+FF][--XF[+X]][++F-X]' },
         ]
     },
     {
         axiom: 'F',
         rules: [
-            ['F', 'FF[+F]F[-F]F'],
+            { symbol: 'F', odds: 1.0, newSymbols: 'FF+[+F-F-F]-[-F+F+F]' },
+        ]
+    },
+    {
+        axiom: 'X',
+        rules: [
+            { symbol: 'F', odds: 1.0, newSymbols: 'FX[FX[+XF]]' },
+            { symbol: 'X', odds: 1.0, newSymbols: 'FF[+XZ++X-F[+ZX]][-X++F-X]' },
+            { symbol: 'Z', odds: 1.0, newSymbols: '[+F-X-F][++ZX]' },
+        ]
+    },
+    {
+        axiom: 'F',
+        rules: [
+            { symbol: 'F', odds: 1.0, newSymbols: 'F[+F]F[-F]F' },
+        ]
+    },
+    {
+        axiom: 'X',
+        rules: [
+            { symbol: 'X', odds: 0.33, newSymbols: 'F[+X]F[-X]+X' },
+            { symbol: 'X', odds: 0.33, newSymbols: 'F[-X]F[-X]+X' },
+            { symbol: 'X', odds: 0.34, newSymbols: 'F[-X]F+X' },
+            { symbol: 'F', odds: 1.0, newSymbols: 'FF' },
+        ]
+    },
+    {
+        axiom: 'X',
+        rules: [
+            { symbol: 'X', odds: 1.0, newSymbols: 'F[-[[X]+X]]+F[+FX]-X' },
+            { symbol: 'F', odds: 1.0, newSymbols: 'FF' },
         ]
     },
 ];
@@ -47,6 +71,7 @@ function Run(useUserSentence = false)
     config.isAnimated = document.getElementById("animate").checked;
 
     config.leafColor = document.getElementById("leaves-col").value;
+    config.leafType = document.getElementById("leaves-type").valueAsNumber;
     config.leafLength = document.getElementById("leaves-length").valueAsNumber;
     config.leafWidth = document.getElementById("leaves-width").valueAsNumber;
     config.leafAlpha = document.getElementById("leaves-alpha").valueAsNumber;
@@ -99,15 +124,19 @@ function Run(useUserSentence = false)
     
 }
 
-function FindMatchingrule(config, c)
+function SelectRule(config, matchingRules)
 {
-    for (let rule of config.rules)
+    const chance = config.rng.nextFloat();
+    let total = 0;
+
+    for (let rule of matchingRules)
     {
-        if (c == rule[0])
+        total += rule.odds;
+        if (chance < total)
             return rule;
     }
-
-    return null;
+    
+    return '';
 }
 
 function ApplyRulesToSentence(config, sentence)
@@ -118,10 +147,17 @@ function ApplyRulesToSentence(config, sentence)
     {
         const c = sentence[i];
 
-        const rule = FindMatchingrule(config, c);
-        if (rule)
+        let matchingRules = [];
+        for (let rule of config.rules)
         {
-            newSentence += rule[1];
+            if (c == rule.symbol)
+                matchingRules.push(rule);
+        }
+
+        if (matchingRules.length > 0)
+        {
+            const selectedRule = SelectRule(config, matchingRules);
+            newSentence += selectedRule.newSymbols;
         }
         else
         {
@@ -148,19 +184,49 @@ function RenderLeaf(ctx, config)
     ctx.fillStyle = config.leafColor;
     ctx.globalAlpha = config.leafAlpha;
 
-    const scaleChange = config.rng.nextFloatRange(1 - (config.variability * 0.1), 1 + (config.variability * 1));
-    const lengthChange = config.rng.nextFloatRange(1 - (config.variability * 0.1), 1 + (config.variability * 1));
+    const leafWidth = config.rng.nextFloatRange(
+        config.leafWidth * (1 - config.variability),
+        config.leafWidth * (1 + config.variability));
 
-    ctx.scale(config.leafWidth * scaleChange, config.leafLength * lengthChange);
+    const leafLength = config.rng.nextFloatRange(
+        config.leafLength * (1 - config.variability),
+        config.leafLength * (1 + config.variability));
 
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(1, -1);
-    ctx.lineTo(0, -4);
-    ctx.lineTo(-1, -1);
-    ctx.lineTo(0, 0);
-    ctx.closePath();
-    ctx.fill();
+    ctx.scale(leafWidth, leafLength);
+
+    if (config.leafType == 0)
+    {
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(1, -1);
+        ctx.lineTo(0, -4);
+        ctx.lineTo(-1, -1);
+        ctx.lineTo(0, 0);
+        ctx.closePath();
+        ctx.fill();
+    }
+    else if (config.leafType == 1)
+    {
+        ctx.beginPath();
+        ctx.arc(0, -2, 2, 0, 2 * Math.PI);
+        ctx.closePath();
+        ctx.fill();
+    }
+    else if (config.leafType == 2)
+    {
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(1, -1);
+        ctx.lineTo(1, -4);
+        ctx.lineTo(0, -5);
+        ctx.lineTo(-1, -4);
+        ctx.lineTo(-1, -1);
+        ctx.lineTo(0, 0);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillRect(0, 0, 0.25, -5);
+    }
 }
 
 function RenderBranch(ctx, startWidth, endWidth, length)
