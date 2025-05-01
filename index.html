@@ -9,8 +9,12 @@
     <canvas id="canvas" width="800" height="800"></canvas>
     <div id="settings">
         <div class="settings-section">
-            <input type="color" id="background-col" value="#ddfafd" oninput="OnParamsChanged()"><span>Background</span>
-            <input type="range" id="presets" min="0" max="6" value="1" oninput="OnParamsChanged()"><span>Rule Presets</span>
+            <input type="range" id="globalPresets" min="0" max="5" value="0" oninput="OnGlobalPresetChanged()"><span>Global Presets</span>
+        </div>
+        <div class="settings-section">
+            <input type="color" id="background-col-top" value="#ddfafd" oninput="OnParamsChanged()"><span>Background Top</span>
+            <input type="color" id="background-col-bottom" value="#fecba9" oninput="OnParamsChanged()"><span>Background Bottom</span>
+            <input type="range" id="presets" min="0" max="8" value="1" oninput="OnParamsChanged()"><span>Rule Presets</span>
             <input type="range" id="iterations" min="1" max="5" value="3" oninput="OnParamsChanged()"><span>Iterations</span>
             <input type="range" id="variability" min="0.0" max="1.0" value="0.1" step="0.01" oninput="OnParamsChanged()"><span>Variability</span>
             <input type="range" id="seed" min="0" max="50" value="25" oninput="OnParamsChanged()"><span>Seed</span>
@@ -20,14 +24,14 @@
             <input type="color" id="leaves-col" value="#5edb3b" oninput="OnParamsChanged()"><span>Leaves</span>
             <input type="range" id="leaves-type" min="0" max="2" value="0" oninput="OnParamsChanged()"><span>Type</span>
             <input type="range" id="leaves-alpha" min="0.1" max="1.0" value="0.75" step="0.01" oninput="OnParamsChanged()"><span>Alpha</span>
-            <input type="range" id="leaves-length" min="0.5" max="20" value="5.0" oninput="OnParamsChanged()"><span>Length</span>
-            <input type="range" id="leaves-width" min="0.5" max="20" value="2.0" oninput="OnParamsChanged()"><span>Width</span>
+            <input type="range" id="leaves-length" min="0.5" max="20" value="10.0" oninput="OnParamsChanged()"><span>Length</span>
+            <input type="range" id="leaves-width" min="0.5" max="20" value="5.0" oninput="OnParamsChanged()"><span>Width</span>
         </div>
         <div class="settings-section">
             <input type="color" id="branches-col" value="#7d5010" oninput="OnParamsChanged()"><span>Branches</span>
             <input type="range" id="branches-length" min="0.5" max="100" value="30.0" oninput="OnParamsChanged()"><span>Length</span>
             <input type="range" id="branches-angle" min="0.1" max="90.0" value="22.5" step="0.1" oninput="OnParamsChanged()"><span>Angle</span>
-            <input type="range" id="branches-width" min="0.1" max="10.0" value="5.0" step="0.1" oninput="OnParamsChanged()"><span>Starting Width</span>
+            <input type="range" id="branches-width" min="0.1" max="45.0" value="6.0" step="0.1" oninput="OnParamsChanged()"><span>Starting Width</span>
             <input type="range" id="branches-width-falloff" min="0.1" max="1.0" value="0.7" step="0.01" oninput="OnParamsChanged()"><span>Width Falloff</span>
             <input type="range" id="branches-min-width" min="0.1" max="10.0" value="0.3" step="0.1" oninput="OnParamsChanged()"><span>Min Width</span>
         </div>
