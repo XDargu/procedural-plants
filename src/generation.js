@@ -192,10 +192,70 @@ const globalPresets = [
         branchWidth: 20,
         branchWidthFalloff: 0.64, 
         branchWidthMin: 0.1
+    },
+    {
+        backgroundColorTop: "#260330",
+        backgroundColorBottom: "#110113",
+        preset: 2,
+        iterations: 2,
+        variability: 0.29,
+        seed: 23,
+        isAnimated: false,
+        leafColor: "#b73615",
+        leafType: 1,
+        leafLength: 3.5,
+        leafWidth: 8.5,
+        leafAlpha: 0.88,
+        branchColor: "#95f7bf",
+        branchLength: 52.5,
+        branchAngle: 7.6,
+        branchWidth: 6.2,
+        branchWidthFalloff: 0.63, 
+        branchWidthMin: 1
     }
 ]
 
 let lastTimeout = null;
+
+function OnRandomize()
+{
+    let rng = new RNG();
+    const setRandomValue = (input) => {
+        const val = rng.nextFloatRange(parseFloat(input.min), parseFloat(input.max));
+        input.value = val;
+    }
+
+    const setRandomRange = (input, min, max) => {
+        const val = rng.nextFloatRange(parseFloat(min), parseFloat(max));
+        input.value = val;
+    }
+
+    const setRandomColor = (input) => {
+        input.value = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
+    }
+
+    //setRandomColor(document.getElementById("background-col-top"));
+    //setRandomColor(document.getElementById("background-col-bottom"));
+    setRandomColor(document.getElementById("leaves-col"));
+    setRandomColor(document.getElementById("branches-col"));
+
+    setRandomValue(document.getElementById("presets"));
+    setRandomValue(document.getElementById("variability"));
+    setRandomValue(document.getElementById("seed"));
+
+    setRandomValue(document.getElementById("leaves-type"));
+    setRandomValue(document.getElementById("leaves-length"));
+    setRandomValue(document.getElementById("leaves-width"));
+    setRandomValue(document.getElementById("leaves-alpha"));
+
+    setRandomRange(document.getElementById("branches-length"), 30, 50);
+    setRandomValue(document.getElementById("branches-angle"));
+    setRandomValue(document.getElementById("branches-width"));
+    setRandomValue(document.getElementById("branches-width-falloff"));
+    setRandomValue(document.getElementById("branches-min-width"));
+
+    Run();
+}
 
 function LoadGlobalPreset()
 {

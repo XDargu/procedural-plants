@@ -9,7 +9,8 @@
     <canvas id="canvas" width="800" height="800"></canvas>
     <div id="settings">
         <div class="settings-section">
-            <input type="range" id="globalPresets" min="0" max="5" value="0" oninput="OnGlobalPresetChanged()"><span>Global Presets</span>
+            <input type="range" id="globalPresets" min="0" max="6" value="0" oninput="OnGlobalPresetChanged()"><span>Global Presets</span>
+            <input type="button" value="Randomize" id="randomimze" onclick="OnRandomize()">
         </div>
         <div class="settings-section">
             <input type="color" id="background-col-top" value="#ddfafd" oninput="OnParamsChanged()"><span>Background Top</span>
