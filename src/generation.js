@@ -259,7 +259,7 @@ function OnRandomize()
 
 function LoadGlobalPreset()
 {
-    const preset = globalPresets[document.getElementById("globalPresets").valueAsNumber];
+    const preset = globalPresets[parseInt(document.getElementById("globalPresets").value)];
 
     // Params
     document.getElementById("background-col-top").value = preset.backgroundColorTop;
@@ -268,7 +268,6 @@ function LoadGlobalPreset()
     document.getElementById("iterations").value = preset.iterations;
     document.getElementById("variability").value = preset.variability;
     document.getElementById("seed").value = preset.seed;
-    document.getElementById("animate").checked = preset.isAnimated;
 
     document.getElementById("leaves-col").value = preset.leafColor;
     document.getElementById("leaves-type").value = preset.leafType;

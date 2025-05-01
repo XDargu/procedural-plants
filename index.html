@@ -9,7 +9,16 @@
     <canvas id="canvas" width="800" height="800"></canvas>
     <div id="settings">
         <div class="settings-section">
-            <input type="range" id="globalPresets" min="0" max="6" value="0" oninput="OnGlobalPresetChanged()"><span>Global Presets</span>
+            <select id="globalPresets" onchange="OnGlobalPresetChanged()">
+                <option value="0">Bush</option>
+                <option value="1">Sunset</option>
+                <option value="2">Blossom</option>
+                <option value="3">Reed</option>
+                <option value="4">Tree</option>
+                <option value="5">Pine</option>
+                <option value="6">Mushroom</option>
+            </select>
+            <span>Global Presets</span>
             <input type="button" value="Randomize" id="randomimze" onclick="OnRandomize()">
         </div>
         <div class="settings-section">
