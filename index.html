@@ -17,6 +17,8 @@
                 <option value="4">Tree</option>
                 <option value="5">Pine</option>
                 <option value="6">Mushroom</option>
+                <option value="7">Grass</option>
+                <option value="8">Squares</option>
             </select>
             <span>Global Presets</span>
             <input type="button" value="Randomize" id="randomimze" onclick="OnRandomize()">
@@ -24,7 +26,7 @@
         <div class="settings-section">
             <input type="color" id="background-col-top" value="#ddfafd" oninput="OnParamsChanged()"><span>Background Top</span>
             <input type="color" id="background-col-bottom" value="#fecba9" oninput="OnParamsChanged()"><span>Background Bottom</span>
-            <input type="range" id="presets" min="0" max="8" value="1" oninput="OnParamsChanged()"><span>Rule Presets</span>
+            <input type="range" id="presets" min="0" max="10" value="1" oninput="OnParamsChanged()"><span>Rule Presets</span>
             <input type="range" id="iterations" min="1" max="5" value="3" oninput="OnParamsChanged()"><span>Iterations</span>
             <input type="range" id="variability" min="0.0" max="1.0" value="0.1" step="0.01" oninput="OnParamsChanged()"><span>Variability</span>
             <input type="range" id="seed" min="0" max="50" value="25" oninput="OnParamsChanged()"><span>Seed</span>

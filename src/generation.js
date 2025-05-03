@@ -69,6 +69,26 @@ const presets = [
             { symbol: 'X', odds: 0.5, newSymbols: 'F+[-F-XF-X][+FF][--XF[+X]][++F-X]' },
             { symbol: 'F', odds: 1.0, newSymbols: 'FF' },
         ]
+    },
+    {
+        axiom: 'FAB',
+        rules: [
+            { symbol: 'A', odds: 1.0, newSymbols: '[+FB--FA][-F+A][B]' },
+            { symbol: 'B', odds: 1.0, newSymbols: '[F+-FA][-BF+A]' },
+        ]
+    },
+    {
+        // L: Leave stem
+        axiom: 'X',
+        rules: [
+            { symbol: 'L', odds: 0.8, newSymbols: '+F+[]--[]+F+[]--[]+F+[]--[]L' }, // Leave
+            { symbol: 'L', odds: 0.2, newSymbols: '[]' }, // Leave end
+            { symbol: 'X', odds: 0.33, newSymbols: 'F[+X]F[-:]+X' },
+            { symbol: 'X', odds: 0.33, newSymbols: 'F[-L]F[-X]+X' },
+            { symbol: 'X', odds: 0.34, newSymbols: 'F[-X]F+L' },
+            //{ symbol: 'F', odds: 1.0, newSymbols: 'FF' },
+
+        ]
     }
 ];
 
@@ -212,6 +232,46 @@ const globalPresets = [
         branchWidth: 6.2,
         branchWidthFalloff: 0.63, 
         branchWidthMin: 1
+    },
+    {
+        backgroundColorTop: "#e3de64",
+        backgroundColorBottom: "#e3de64",
+        preset: 6,
+        iterations: 4,
+        variability: 0.09,
+        seed: 20,
+        isAnimated: false,
+        leafColor: "#24a5e5",
+        leafType: 0,
+        leafLength: 17.5,
+        leafWidth: 6.5,
+        leafAlpha: 0.54,
+        branchColor: "#1e74a9",
+        branchLength: 16.5,
+        branchAngle: 5.1,
+        branchWidth: 24.6,
+        branchWidthFalloff: 0.33, 
+        branchWidthMin: 8.9
+    },
+    {
+        backgroundColorTop: "#e3de64",
+        backgroundColorBottom: "#e3de64",
+        preset: 2,
+        iterations: 3,
+        variability: 0,
+        seed: 46,
+        isAnimated: false,
+        leafColor: "#d72d2d",
+        leafType: 1,
+        leafLength: 13.5,
+        leafWidth: 13.5,
+        leafAlpha: 0.72,
+        branchColor: "#3c3afc",
+        branchLength: 47.5,
+        branchAngle: 90,
+        branchWidth: 19.3,
+        branchWidthFalloff: 0.76, 
+        branchWidthMin: 6.4
     }
 ]
 
