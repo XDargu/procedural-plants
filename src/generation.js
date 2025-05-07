@@ -531,10 +531,12 @@ function* Render(config, updateSentence = false)
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
 
+
     ctx.resetTransform();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     // Background
+    
     const grad = ctx.createLinearGradient(0, 0, 0, canvas.height * 0.7);
     grad.addColorStop(0, config.backgroundColorTop);
     grad.addColorStop(1, config.backgroundColorBottom);
@@ -553,6 +555,10 @@ function* Render(config, updateSentence = false)
         width: config.branchWidth
     }
 
+    // Scale to keep the same relative size
+    const scale = canvas.width / 800;
+    ctx.scale(scale, scale);
+    
     for (let i=0; i<config.sentence.length; ++i)
     {
         yield;
@@ -614,4 +620,33 @@ function OnGlobalPresetChanged()
     Run();
 }
 
+function AdaptCanvas()
+{
+    const canvas = document.getElementById("canvas");
+    const grid = document.body;
+    grid.classList.remove("portrait");
+    
+    const height = document.documentElement.clientHeight;
+    const width = document.documentElement.clientWidth;
+    if (width > height)
+    {
+        // Landscape
+        canvas.width = width / 2 - 25;
+        canvas.height = width / 2 - 25;
+    }
+    else
+    {
+        // Portrait
+        canvas.width = width - 25;
+        canvas.height = width - 25;
+        grid.classList.add("portrait");
+    }
+}
+
+AdaptCanvas();
 Run();
+
+window.addEventListener("resize", (event) => {
+    AdaptCanvas();
+    Run();
+})

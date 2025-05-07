@@ -2,12 +2,6 @@
     border: 1px solid #d3d3d3;
 }
 
-#settings {
-    display: inline;
-    position: absolute;
-    margin-left: 10px;
-}
-
 .settings-section {
     display: grid;
     grid-template-columns: auto auto;
@@ -18,4 +12,18 @@
     width: 400px;
     height: 200px;
     margin-top: 2em;
+}
+
+.grid
+{
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: start;
+    grid-template-rows: 1fr;
+    column-gap: 20px;
+}
+
+.grid.portrait
+{
+    grid-template-columns: auto;
 }
