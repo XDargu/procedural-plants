@@ -279,7 +279,7 @@ let lastTimeout = null;
 
 function OnRandomize()
 {
-    document.querySelectorAll(".preset")?.forEach(p => p.classList.remove("active"));
+    document.querySelectorAll("#globalPresetGrid .preset")?.forEach(p => p.classList.remove("active"));
 
     let rng = new RNG();
     const setRandomValue = (input) => {
@@ -301,11 +301,13 @@ function OnRandomize()
     setRandomColor(document.getElementById("leaves-col"));
     setRandomColor(document.getElementById("branches-col"));
 
-    setRandomValue(document.getElementById("presets"));
+    const randomGrowth = rng.nextRange(0, 11);
+    SetOptionValue("growthGrid", "presets", randomGrowth);
     setRandomValue(document.getElementById("variability"));
     setRandomValue(document.getElementById("seed"));
 
-    setRandomValue(document.getElementById("leaves-type"));
+    const randomLeaf = rng.nextRange(0, 3);
+    SetOptionValue("leafShapeGrid", "leaves-type", randomLeaf);
     setRandomValue(document.getElementById("leaves-length"));
     setRandomValue(document.getElementById("leaves-width"));
     setRandomValue(document.getElementById("leaves-alpha"));
@@ -326,13 +328,13 @@ function LoadGlobalPreset()
     // Params
     document.getElementById("background-col-top").value = preset.backgroundColorTop;
     document.getElementById("background-col-bottom").value = preset.backgroundColorBottom;
-    document.getElementById("presets").value = preset.preset;
+    SetOptionValue("growthGrid", "presets", preset.preset);
     document.getElementById("iterations").value = preset.iterations;
     document.getElementById("variability").value = preset.variability;
     document.getElementById("seed").value = preset.seed;
 
     document.getElementById("leaves-col").value = preset.leafColor;
-    document.getElementById("leaves-type").value = preset.leafType;
+    SetOptionValue("leafShapeGrid", "leaves-type", preset.leafType);
     document.getElementById("leaves-length").value = preset.leafLength;
     document.getElementById("leaves-width").value = preset.leafWidth;
     document.getElementById("leaves-alpha").value = preset.leafAlpha;
@@ -345,20 +347,56 @@ function LoadGlobalPreset()
     document.getElementById("branches-min-width").value = preset.branchWidthMin;
 }
 
+function SetupOptionGrid(gridId, inputId, callback)
+{
+    const grid = document.getElementById(gridId);
+    const input = document.getElementById(inputId);
+
+    if (!grid || !input) return;
+
+    grid.querySelectorAll(".preset").forEach(btn => {
+        btn.addEventListener("click", () => {
+
+            input.value = btn.dataset.value;
+
+            grid.querySelectorAll(".preset")
+                .forEach(b => b.classList.remove("active"));
+
+            btn.classList.add("active");
+
+            callback();
+        });
+    });
+}
+
+function SetOptionValue(gridId, inputId, value)
+{
+    const input = document.getElementById(inputId);
+    const grid = document.getElementById(gridId);
+
+    if (!input || !grid) return;
+
+    input.value = value;
+
+    grid.querySelectorAll(".preset").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.value == value);
+    });
+}
+
 function Run(useUserSentence = false)
 {
     let config = {};
     // Params
     config.backgroundColorTop = document.getElementById("background-col-top").value;
     config.backgroundColorBottom = document.getElementById("background-col-bottom").value;
-    config.preset = document.getElementById("presets").valueAsNumber;
+    config.preset = parseInt(document.getElementById("presets").value);
     config.iterations = document.getElementById("iterations").valueAsNumber;
     config.variability = document.getElementById("variability").valueAsNumber;
     config.seed = document.getElementById("seed").valueAsNumber;
     config.isAnimated = document.getElementById("animate").checked;
 
     config.leafColor = document.getElementById("leaves-col").value;
-    config.leafType = document.getElementById("leaves-type").valueAsNumber;
+    config.leafType = parseInt(document.getElementById("leaves-type").value);
     config.leafLength = document.getElementById("leaves-length").valueAsNumber;
     config.leafWidth = document.getElementById("leaves-width").valueAsNumber;
     config.leafAlpha = document.getElementById("leaves-alpha").valueAsNumber;
@@ -648,7 +686,6 @@ function AdaptCanvas()
 
     const dpr = window.devicePixelRatio || 1;
 
-    // IMPORTANT: square canvas buffer
     canvas.style.width = size + "px";
     canvas.style.height = size + "px";
 
@@ -657,7 +694,6 @@ function AdaptCanvas()
 
     const ctx = canvas.getContext("2d");
 
-    // reset transform safely
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
@@ -667,24 +703,6 @@ window.addEventListener("resize", (event) => {
 })
 
 document.addEventListener("DOMContentLoaded", () => {
-
-    const grid = document.getElementById("presetGrid");
-    const select = document.getElementById("globalPresets");
-
-    grid.addEventListener("click", (e) => {
-        const btn = e.target.closest(".preset");
-        if (!btn) return;
-
-        const value = btn.dataset.value;
-
-        // update hidden select (keeps your system working)
-        select.value = value;
-        OnGlobalPresetChanged();
-
-        // update UI state
-        document.querySelectorAll(".preset").forEach(p => p.classList.remove("active"));
-        btn.classList.add("active");
-    });
 
     const tooltip = document.getElementById("tooltip");
 
@@ -710,6 +728,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     attachTooltips();
+    SetupOptionGrid("globalPresetGrid", "globalPresets", () => { OnGlobalPresetChanged(); });
+    SetupOptionGrid("leafShapeGrid", "leaves-type", () => { OnParamsChanged(); });
+    SetupOptionGrid("growthGrid", "presets", () => { OnParamsChanged(); });
 
     AdaptCanvas();
     LoadGlobalPreset();

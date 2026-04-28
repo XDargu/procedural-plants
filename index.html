@@ -67,6 +67,15 @@
 
                 <label data-tooltip="Selects a predefined growth style that defines how the plant structure evolves.">Growth Pattern</label>
                 <input type="range" id="presets" min="0" max="10" value="1" oninput="OnParamsChanged()">
+                    <button data-value="6" class="preset">Leaning Right</button>
+                    <button data-value="7" class="preset">Lollipop</button>
+                    <button data-value="8" class="preset">Flower Leaves</button>
+                    <button data-value="9" class="preset">Dense Shrub</button>
+                    <button data-value="10" class="preset">Sapling</button>
+                </div>
+
+                <!-- hidden compatibility input -->
+                <input type="hidden" id="presets" value="1">
 
                 <label data-tooltip="How many times the structure is expanded. Higher values create more complex and detailed plants.">Iterations</label>
                 <input type="range" id="iterations" min="1" max="5" value="3" oninput="OnParamsChanged()">
@@ -90,7 +99,14 @@
                 <input type="color" id="leaves-col" value="#5edb3b" oninput="OnParamsChanged()">
 
                 <label data-tooltip="Controls the shape style of leaves.">Shape</label>
-                <input type="range" id="leaves-type" min="0" max="2" value="0" oninput="OnParamsChanged()">
+                <div class="preset-grid" id="leafShapeGrid">
+                    <button data-value="0" class="preset">Pointy</button>
+                    <button data-value="1" class="preset">Round</button>
+                    <button data-value="2" class="preset">Hexagon</button>
+                </div>
+
+                <!-- hidden compatibility input -->
+                <input type="hidden" id="leaves-type" value="0">
 
                 <label data-tooltip="Transparency of leaves.">Transparency</label>
                 <input type="range" id="leaves-alpha" min="0.1" max="1.0" value="0.75" step="0.01" oninput="OnParamsChanged()">
