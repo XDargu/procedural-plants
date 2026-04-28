@@ -22,20 +22,10 @@
 
         <div id="settings">
 
+            <!-- Examples -->
             <div class="settings-section">
-                <div class="section-title">Examples</div>
 
-                <select id="globalPresets" onchange="OnGlobalPresetChanged()">
-                    <option value="0">Bush</option>
-                    <option value="1">Sunset</option>
-                    <option value="2" selected="selected">Blossom</option>
-                    <option value="3">Reed</option>
-                    <option value="4">Tree</option>
-                    <option value="5">Pine</option>
-                    <option value="6">Mushroom</option>
-                    <option value="7">Grass</option>
-                    <option value="8">Squares</option>
-                </select>
+                <div class="section-title">Examples</div>
 
                 <div class="preset-grid" id="globalPresetGrid">
                     <button class="preset" data-value="0">Bush</button>
@@ -49,103 +39,149 @@
                     <button class="preset" data-value="8">Squares</button>
                 </div>
 
+                <!-- hidden compatibility -->
+                <input type="hidden" id="globalPresets" value="2">
+
                 <input type="button" value="Randomize Values" id="randomimze" onclick="OnRandomize()">
+
             </div>
 
+
+            <!-- Scene -->
             <div class="settings-section">
                 <div class="section-title">Scene</div>
 
-                <label data-tooltip="Color of the sky at the top of the scene.">Background Top</label>
-                <input type="color" id="background-col-top" value="#ddfafd" oninput="OnParamsChanged()">
+                <div class="control-row">
+                    <label data-tooltip="Color of the sky at the top of the scene.">Background Top</label>
+                    <input type="color" id="background-col-top" value="#ddfafd" oninput="OnParamsChanged()">
+                </div>
 
-                <label data-tooltip="Color of the sky near the ground.">Background Bottom</label>
-                <input type="color" id="background-col-bottom" value="#fecba9" oninput="OnParamsChanged()">
+                <div class="control-row">
+                    <label data-tooltip="Color of the sky near the ground.">Background Bottom</label>
+                    <input type="color" id="background-col-bottom" value="#fecba9" oninput="OnParamsChanged()">
+                </div>
             </div>
 
+
+            <!-- Growth -->
             <div class="settings-section">
                 <div class="section-title">Growth</div>
 
-                <label data-tooltip="Selects a predefined growth style that defines how the plant structure evolves.">Growth Pattern</label>
-                <div class="preset-grid" id="growthGrid">
-                    <button data-value="0" class="preset">Small Bush</button>
-                    <button data-value="1" class="preset">Simple Tree</button>
-                    <button data-value="2" class="preset">Crazy Split</button>
-                    <button data-value="3" class="preset">Somber</button>
-                    <button data-value="4" class="preset">Standing Tall</button>
-                    <button data-value="5" class="preset">Short Brush</button>
-                    <button data-value="6" class="preset">Leaning Right</button>
-                    <button data-value="7" class="preset">Lollipop</button>
-                    <button data-value="8" class="preset">Flower Leaves</button>
-                    <button data-value="9" class="preset">Dense Shrub</button>
-                    <button data-value="10" class="preset">Sapling</button>
+                <div class="control-row">
+                    <label data-tooltip="Growth style that defines how the plant structure grows.">Pattern</label>
+                    <div class="preset-grid" id="growthGrid">
+                        <button data-value="0" class="preset">Small Bush</button>
+                        <button data-value="1" class="preset">Simple Tree</button>
+                        <button data-value="2" class="preset">Crazy Split</button>
+                        <button data-value="3" class="preset">Somber</button>
+                        <button data-value="4" class="preset">Standing Tall</button>
+                        <button data-value="5" class="preset">Short Brush</button>
+                        <button data-value="6" class="preset">Leaning Right</button>
+                        <button data-value="7" class="preset">Lollipop</button>
+                        <button data-value="8" class="preset">Flower Leaves</button>
+                        <button data-value="9" class="preset">Dense Shrub</button>
+                        <button data-value="10" class="preset">Sapling</button>
+                    </div>
+
+                    <input type="hidden" id="presets" value="2">
                 </div>
 
-                <!-- hidden compatibility input -->
-                <input type="hidden" id="presets" value="1">
+                <div class="control-row">
+                    <label data-tooltip="How many times the structure is expanded. Higher values create more complex and detailed plants.">Iterations</label>
+                    <div class="slider"><input type="range" id="iterations" min="1" max="5" value="3" oninput="OnParamsChanged()"></div>
+                </div>
 
-                <label data-tooltip="How many times the structure is expanded. Higher values create more complex and detailed plants.">Iterations</label>
-                <div class="slider"><input type="range" id="iterations" min="1" max="5" value="3" oninput="OnParamsChanged()"></div>
-
-                <label data-tooltip="Controls randomness in branching angle and length, based on the seed. Low values produce stable, predictable shapes. High values create wild organic growth.">Variability</label>
+                <div class="control-row">
+                    <label data-tooltip="Controls randomness in branching angle and length, based on the seed. Low values produce stable, predictable shapes. High values create wild organic growth.">Variability</label>
                 <div class="slider"><input type="range" id="variability" min="0.0" max="1.0" value="0.1" step="0.01" oninput="OnParamsChanged()"></div>
+                </div>
 
-                <label data-tooltip="Determines the variability of the generated plant. Same seed always produces the same result.">Seed</label>
-                <div class="slider"><input type="range" id="seed" min="0" max="50" value="25" oninput="OnParamsChanged()"></div>
+                <div class="control-row">
+                    <label data-tooltip="Determines the variability of the generated plant. Same seed always produces the same result.">Seed</label>
+                    <div class="slider"><input type="range" id="seed" min="0" max="50" value="25" oninput="OnParamsChanged()"></div>
+                </div>
 
-                <label data-tooltip="Animates the generation process step by step.">
+                <div class="control-row">
+                    <label data-tooltip="Animates the generation process step by step.">Animate</label>
                     <input type="checkbox" id="animate" oninput="OnParamsChanged()">
-                    Animate
-                </label>
+                </div>
             </div>
 
+
+            <!-- Leaves -->
             <div class="settings-section">
                 <div class="section-title">Leaves</div>
 
-                <label data-tooltip="Color of the leaves at the tips of the plant.">Color</label>
-                <input type="color" id="leaves-col" value="#5edb3b" oninput="OnParamsChanged()">
-
-                <label data-tooltip="Controls the shape style of leaves.">Shape</label>
-                <div class="preset-grid" id="leafShapeGrid">
-                    <button data-value="0" class="preset">Pointy</button>
-                    <button data-value="1" class="preset">Round</button>
-                    <button data-value="2" class="preset">Hexagon</button>
+                <div class="control-row">
+                    <label data-tooltip="Color of the leaves at the tips of the plant.">Color</label>
+                    <input type="color" id="leaves-col" value="#5edb3b" oninput="OnParamsChanged()">
                 </div>
 
-                <!-- hidden compatibility input -->
-                <input type="hidden" id="leaves-type" value="0">
+                <div class="control-row">
+                    <label data-tooltip="Controls the shape style of leaves.">Shape</label>
+                    <div class="preset-grid" id="leafShapeGrid">
+                        <button data-value="0" class="preset">Point</button>
+                        <button data-value="1" class="preset">Orb</button>
+                        <button data-value="2" class="preset">Crown</button>
+                    </div>
 
-                <label data-tooltip="Transparency of leaves.">Transparency</label>
-                <div class="slider"><input type="range" id="leaves-alpha" min="0.1" max="1.0" value="0.75" step="0.01" oninput="OnParamsChanged()"></div>
+                    <input type="hidden" id="leaves-type" value="0">
+                </div>
 
-                <label data-tooltip="Size of individual leaves along their main axis.">Length</label>
-                <div class="slider"><input type="range" id="leaves-length" min="0.5" max="20" value="10.0" oninput="OnParamsChanged()"></div>
+                <div class="control-row">
+                    <label data-tooltip="Transparency of leaves.">Transparency</label>
+                    <div class="slider"><input type="range" id="leaves-alpha" min="0.1" max="1.0" value="0.75" step="0.01" oninput="OnParamsChanged()"></div>
+                </div>
+                
+                <div class="control-row">
+                    <label data-tooltip="Size of individual leaves along their main axis.">Length</label>
+                    <div class="slider"><input type="range" id="leaves-length" min="0.5" max="20" value="10.0" oninput="OnParamsChanged()"></div>
+                </div>
 
-                <label data-tooltip="Thickness of leaves perpendicular to their growth direction.">Width</label>
-                <div class="slider"><input type="range" id="leaves-width" min="0.5" max="20" value="5.0" oninput="OnParamsChanged()"></div>
+                <div class="control-row">
+                    <label data-tooltip="Thickness of leaves perpendicular to their growth direction.">Width</label>
+                    <div class="slider"><input type="range" id="leaves-width" min="0.5" max="20" value="5.0" oninput="OnParamsChanged()"></div>
+                </div>
             </div>
 
+
+            <!-- Branches -->
             <div class="settings-section">
                 <div class="section-title">Branches</div>
 
-                <label data-tooltip="Color of the branches.">Color</label>
-                <input type="color" id="branches-col" value="#7d5010" oninput="OnParamsChanged()">
+                <div class="control-row">
+                    <label data-tooltip="Color of the branches.">Color</label>
+                    <input type="color" id="branches-col" value="#7d5010" oninput="OnParamsChanged()">
+                </div>
 
-                <label data-tooltip="Length of the initial branch segment before it continues or splits.">Length</label>
-                <div class="slider"><input type="range" id="branches-length" min="0.5" max="100" value="30.0" oninput="OnParamsChanged()"></div>
+                <div class="control-row">
+                    <label data-tooltip="Length of the initial branch segment before it continues or splits.">Length</label>
+                    <div class="slider"><input type="range" id="branches-length" min="0.5" max="100" value="30.0" oninput="OnParamsChanged()"></div>
+                </div>
 
-                <label data-tooltip="Angle between branches. Small angles create dense upward growth, large angles create spread-out shapes.">Angle</label>
-                <div class="slider"><input type="range" id="branches-angle" min="0.1" max="90.0" value="22.5" step="0.1" oninput="OnParamsChanged()"></div>
+                <div class="control-row">
+                    <label data-tooltip="Angle between branches. Small angles create dense upward growth, large angles create spread-out shapes.">Angle</label>
+                    <div class="slider"><input type="range" id="branches-angle" min="0.1" max="90.0" value="22.5" step="0.1" oninput="OnParamsChanged()"></div>
+                </div>
 
-                <label data-tooltip="Initial thickness of the trunk and main branches.">Width</label>
-                <div class="slider"><input type="range" id="branches-width" min="0.1" max="45.0" value="6.0" step="0.1" oninput="OnParamsChanged()"></div>
+                <div class="control-row">
+                    <label data-tooltip="Initial thickness of the trunk and main branches.">Width</label>
+                    <div class="slider"><input type="range" id="branches-width" min="0.1" max="45.0" value="6.0" step="0.1" oninput="OnParamsChanged()"></div>
+                </div>
 
-                <label data-tooltip="How quickly branches thin as they grow.">Width Falloff</label>
-                <div class="slider"><input type="range" id="branches-width-falloff" min="0.1" max="1.0" value="0.7" step="0.01" oninput="OnParamsChanged()"></div>
+                <div class="control-row">
+                    <label data-tooltip="How quickly branches thin as they grow.">Width Falloff</label>
+                    <div class="slider"><input type="range" id="branches-width-falloff" min="0.1" max="1.0" value="0.7" step="0.01" oninput="OnParamsChanged()"></div>
+                </div>
 
-                <label data-tooltip="Minimum thickness a branch can reach.">Min Width</label>
-                <div class="slider"><input type="range" id="branches-min-width" min="0.1" max="10.0" value="0.3" step="0.1" oninput="OnParamsChanged()"></div>
+                <div class="control-row">
+                    <label data-tooltip="Minimum thickness a branch can reach.">Min Width</label>
+                    <div class="slider"><input type="range" id="branches-min-width" min="0.1" max="10.0" value="0.3" step="0.1" oninput="OnParamsChanged()"></div>
+                </div>
             </div>
 
+
+            <!-- Raw -->
             <div class="settings-section">
                 <div class="section-title">Raw System</div>
                 <textarea id="sentence" oninput="OnSentenceChanged()"></textarea>
