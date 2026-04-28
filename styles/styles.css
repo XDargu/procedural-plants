@@ -103,6 +103,12 @@ input[type="button"] {
   border-radius: 10px;
   border: 1px solid #e7d8cd;
   background: white;
+  cursor: pointer;
+}
+
+input[type="button"]:hover {
+    transform:translateY(-1px);
+    box-shadow:0 6px 14px rgba(0,0,0,0.06);
 }
 
 input[type="range"] {
@@ -240,4 +246,37 @@ input[type="checkbox"]:checked {
 
 input[type="checkbox"]:checked::after {
   transform: translateX(18px);
+}
+
+
+.preset-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:8px;
+    margin-bottom:10px;
+}
+
+.preset{
+    padding:10px;
+    border-radius:12px;
+    border:1px solid #eadfd4;
+    background:#fff;
+    cursor:pointer;
+    font-size:13px;
+    transition:all 0.15s ease;
+}
+
+.preset:hover{
+    transform:translateY(-1px);
+    box-shadow:0 6px 14px rgba(0,0,0,0.06);
+}
+
+.preset.active{
+    background:#f3c7d4;
+    border-color:#e3a9bc;
+    font-weight:600;
+}
+
+#globalPresets{
+    display:none;
 }

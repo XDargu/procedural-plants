@@ -279,6 +279,8 @@ let lastTimeout = null;
 
 function OnRandomize()
 {
+    document.querySelectorAll(".preset")?.forEach(p => p.classList.remove("active"));
+
     let rng = new RNG();
     const setRandomValue = (input) => {
         const val = rng.nextFloatRange(parseFloat(input.min), parseFloat(input.max));
@@ -660,11 +662,34 @@ function AdaptCanvas()
 }
 
 
-AdaptCanvas();
-LoadGlobalPreset();
-Run();
+
 
 window.addEventListener("resize", (event) => {
     AdaptCanvas();
     Run();
 })
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const grid = document.getElementById("presetGrid");
+    const select = document.getElementById("globalPresets");
+
+    grid.addEventListener("click", (e) => {
+        const btn = e.target.closest(".preset");
+        if (!btn) return;
+
+        const value = btn.dataset.value;
+
+        // update hidden select (keeps your system working)
+        select.value = value;
+        OnGlobalPresetChanged();
+
+        // update UI state
+        document.querySelectorAll(".preset").forEach(p => p.classList.remove("active"));
+        btn.classList.add("active");
+    });
+
+    AdaptCanvas();
+    LoadGlobalPreset();
+    Run();
+});
