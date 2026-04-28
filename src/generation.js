@@ -526,6 +526,7 @@ function RenderBranch(ctx, startWidth, endWidth, length)
     ctx.fill();
 }
 
+
 function* Render(config, updateSentence = false)
 {
     const canvas = document.getElementById("canvas");
@@ -625,25 +626,42 @@ function AdaptCanvas()
     const canvas = document.getElementById("canvas");
     const grid = document.body;
     grid.classList.remove("portrait");
-    
-    const height = document.documentElement.clientHeight;
-    const width = document.documentElement.clientWidth;
-    if (width > height)
+
+    const maxSize = Math.min(
+        window.innerWidth,
+        window.innerHeight
+    );
+
+    let size;
+
+    if (window.innerWidth > window.innerHeight)
     {
-        // Landscape
-        canvas.width = width / 2 - 25;
-        canvas.height = width / 2 - 25;
+        size = Math.min(window.innerHeight * 0.85, 650);
     }
     else
     {
-        // Portrait
-        canvas.width = width - 25;
-        canvas.height = width - 25;
+        size = window.innerWidth * 0.92;
         grid.classList.add("portrait");
     }
+
+    const dpr = window.devicePixelRatio || 1;
+
+    // IMPORTANT: square canvas buffer
+    canvas.style.width = size + "px";
+    canvas.style.height = size + "px";
+
+    canvas.width = Math.floor(size * dpr);
+    canvas.height = Math.floor(size * dpr);
+
+    const ctx = canvas.getContext("2d");
+
+    // reset transform safely
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
+
 AdaptCanvas();
+LoadGlobalPreset();
 Run();
 
 window.addEventListener("resize", (event) => {

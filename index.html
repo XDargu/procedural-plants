@@ -6,49 +6,122 @@
 </head>
 
 <body class="grid">
-    <canvas id="canvas" width="800" height="800"></canvas>
-    <div id="settings">
-        <div class="settings-section">
-            <select id="globalPresets" onchange="OnGlobalPresetChanged()">
-                <option value="0">Bush</option>
-                <option value="1">Sunset</option>
-                <option value="2">Blossom</option>
-                <option value="3">Reed</option>
-                <option value="4">Tree</option>
-                <option value="5">Pine</option>
-                <option value="6">Mushroom</option>
-                <option value="7">Grass</option>
-                <option value="8">Squares</option>
-            </select>
-            <span>Global Presets</span>
-            <input type="button" value="Randomize" id="randomimze" onclick="OnRandomize()">
+    <div class="app">
+
+    <header class="header">
+        <h1>Generative Plants</h1>
+        <p>Grow your own procedural trees with L-systems. Have fun!</p>
+    </header>
+
+    <div class="workspace">
+
+        <div class="canvas-wrap">
+            <canvas id="canvas"></canvas>
         </div>
-        <div class="settings-section">
-            <input type="color" id="background-col-top" value="#ddfafd" oninput="OnParamsChanged()"><span>Background Top</span>
-            <input type="color" id="background-col-bottom" value="#fecba9" oninput="OnParamsChanged()"><span>Background Bottom</span>
-            <input type="range" id="presets" min="0" max="10" value="1" oninput="OnParamsChanged()"><span>Rule Presets</span>
-            <input type="range" id="iterations" min="1" max="5" value="3" oninput="OnParamsChanged()"><span>Iterations</span>
-            <input type="range" id="variability" min="0.0" max="1.0" value="0.1" step="0.01" oninput="OnParamsChanged()"><span>Variability</span>
-            <input type="range" id="seed" min="0" max="50" value="25" oninput="OnParamsChanged()"><span>Seed</span>
-            <input type="checkbox" id="animate" oninput="OnParamsChanged()"><span>Animate</span>
+
+        <div id="settings">
+
+            <div class="settings-section">
+                <div class="section-title">Presets</div>
+
+                <label>Global Presets</label>
+                <select id="globalPresets" onchange="OnGlobalPresetChanged()">
+                    <option value="0">Bush</option>
+                    <option value="1">Sunset</option>
+                    <option value="2" selected="selected">Blossom</option>
+                    <option value="3">Reed</option>
+                    <option value="4">Tree</option>
+                    <option value="5">Pine</option>
+                    <option value="6">Mushroom</option>
+                    <option value="7">Grass</option>
+                    <option value="8">Squares</option>
+                </select>
+
+                <input type="button" value="Randomize" id="randomimze" onclick="OnRandomize()">
+            </div>
+
+            <div class="settings-section">
+                <div class="section-title">Scene</div>
+
+                <label>Background Top</label>
+                <input type="color" id="background-col-top" value="#ddfafd" oninput="OnParamsChanged()">
+
+                <label>Background Bottom</label>
+                <input type="color" id="background-col-bottom" value="#fecba9" oninput="OnParamsChanged()">
+            </div>
+
+            <div class="settings-section">
+                <div class="section-title">Growth</div>
+
+                <label>Preset</label>
+                <input type="range" id="presets" min="0" max="10" value="1" oninput="OnParamsChanged()">
+
+                <label>Iterations</label>
+                <input type="range" id="iterations" min="1" max="5" value="3" oninput="OnParamsChanged()">
+
+                <label>Variability</label>
+                <input type="range" id="variability" min="0.0" max="1.0" value="0.1" step="0.01" oninput="OnParamsChanged()">
+
+                <label>Seed</label>
+                <input type="range" id="seed" min="0" max="50" value="25" oninput="OnParamsChanged()">
+
+                <label>
+                    <input type="checkbox" id="animate" oninput="OnParamsChanged()">
+                    Animate
+                </label>
+            </div>
+
+            <div class="settings-section">
+                <div class="section-title">Leaves</div>
+
+                <label>Color</label>
+                <input type="color" id="leaves-col" value="#5edb3b" oninput="OnParamsChanged()">
+
+                <label>Type</label>
+                <input type="range" id="leaves-type" min="0" max="2" value="0" oninput="OnParamsChanged()">
+
+                <label>Alpha</label>
+                <input type="range" id="leaves-alpha" min="0.1" max="1.0" value="0.75" step="0.01" oninput="OnParamsChanged()">
+
+                <label>Length</label>
+                <input type="range" id="leaves-length" min="0.5" max="20" value="10.0" oninput="OnParamsChanged()">
+
+                <label>Width</label>
+                <input type="range" id="leaves-width" min="0.5" max="20" value="5.0" oninput="OnParamsChanged()">
+            </div>
+
+            <div class="settings-section">
+                <div class="section-title">Branches</div>
+
+                <label>Color</label>
+                <input type="color" id="branches-col" value="#7d5010" oninput="OnParamsChanged()">
+
+                <label>Length</label>
+                <input type="range" id="branches-length" min="0.5" max="100" value="30.0" oninput="OnParamsChanged()">
+
+                <label>Angle</label>
+                <input type="range" id="branches-angle" min="0.1" max="90.0" value="22.5" step="0.1" oninput="OnParamsChanged()">
+
+                <label>Width</label>
+                <input type="range" id="branches-width" min="0.1" max="45.0" value="6.0" step="0.1" oninput="OnParamsChanged()">
+
+                <label>Width Falloff</label>
+                <input type="range" id="branches-width-falloff" min="0.1" max="1.0" value="0.7" step="0.01" oninput="OnParamsChanged()">
+
+                <label>Min Width</label>
+                <input type="range" id="branches-min-width" min="0.1" max="10.0" value="0.3" step="0.1" oninput="OnParamsChanged()">
+            </div>
+
+            <div class="settings-section">
+                <div class="section-title">Raw System</div>
+                <textarea id="sentence" oninput="OnSentenceChanged()"></textarea>
+            </div>
+
         </div>
-        <div class="settings-section">
-            <input type="color" id="leaves-col" value="#5edb3b" oninput="OnParamsChanged()"><span>Leaves</span>
-            <input type="range" id="leaves-type" min="0" max="2" value="0" oninput="OnParamsChanged()"><span>Type</span>
-            <input type="range" id="leaves-alpha" min="0.1" max="1.0" value="0.75" step="0.01" oninput="OnParamsChanged()"><span>Alpha</span>
-            <input type="range" id="leaves-length" min="0.5" max="20" value="10.0" oninput="OnParamsChanged()"><span>Length</span>
-            <input type="range" id="leaves-width" min="0.5" max="20" value="5.0" oninput="OnParamsChanged()"><span>Width</span>
-        </div>
-        <div class="settings-section">
-            <input type="color" id="branches-col" value="#7d5010" oninput="OnParamsChanged()"><span>Branches</span>
-            <input type="range" id="branches-length" min="0.5" max="100" value="30.0" oninput="OnParamsChanged()"><span>Length</span>
-            <input type="range" id="branches-angle" min="0.1" max="90.0" value="22.5" step="0.1" oninput="OnParamsChanged()"><span>Angle</span>
-            <input type="range" id="branches-width" min="0.1" max="45.0" value="6.0" step="0.1" oninput="OnParamsChanged()"><span>Starting Width</span>
-            <input type="range" id="branches-width-falloff" min="0.1" max="1.0" value="0.7" step="0.01" oninput="OnParamsChanged()"><span>Width Falloff</span>
-            <input type="range" id="branches-min-width" min="0.1" max="10.0" value="0.3" step="0.1" oninput="OnParamsChanged()"><span>Min Width</span>
-        </div>
-        <textarea id="sentence" oninput="OnSentenceChanged()"></textarea>
+
     </div>
+
+</div>
     <script src="src/random.js"></script>
     <script src="src/generation.js"></script>
 </body>
