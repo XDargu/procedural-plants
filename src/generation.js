@@ -282,41 +282,45 @@ function OnRandomize()
     document.querySelectorAll("#globalPresetGrid .preset")?.forEach(p => p.classList.remove("active"));
 
     let rng = new RNG();
-    const setRandomValue = (input) => {
+    const setRandomValue = (id) => {
+        const input = document.getElementById(id);
         const val = rng.nextFloatRange(parseFloat(input.min), parseFloat(input.max));
         input.value = val;
+        SyncSlider(input);
     }
 
-    const setRandomRange = (input, min, max) => {
+    const setRandomRange = (id, min, max) => {
+        const input = document.getElementById(id);
         const val = rng.nextFloatRange(parseFloat(min), parseFloat(max));
         input.value = val;
     }
 
-    const setRandomColor = (input) => {
+    const setRandomColor = (id) => {
+        const input = document.getElementById(id);
         input.value = '#'+(Math.random() * 0xFFFFFF << 0).toString(16).padStart(6, '0');
     }
 
-    //setRandomColor(document.getElementById("background-col-top"));
-    //setRandomColor(document.getElementById("background-col-bottom"));
-    setRandomColor(document.getElementById("leaves-col"));
-    setRandomColor(document.getElementById("branches-col"));
+    //setRandomColor("background-col-top");
+    //setRandomColor("background-col-bottom");
+    setRandomColor("leaves-col");
+    setRandomColor("branches-col");
 
     const randomGrowth = rng.nextRange(0, 11);
     SetOptionValue("growthGrid", "presets", randomGrowth);
-    setRandomValue(document.getElementById("variability"));
-    setRandomValue(document.getElementById("seed"));
+    setRandomValue("variability");
+    setRandomValue("seed");
 
     const randomLeaf = rng.nextRange(0, 3);
     SetOptionValue("leafShapeGrid", "leaves-type", randomLeaf);
-    setRandomValue(document.getElementById("leaves-length"));
-    setRandomValue(document.getElementById("leaves-width"));
-    setRandomValue(document.getElementById("leaves-alpha"));
+    setRandomValue("leaves-length");
+    setRandomValue("leaves-width");
+    setRandomValue("leaves-alpha");
 
-    setRandomRange(document.getElementById("branches-length"), 30, 50);
-    setRandomValue(document.getElementById("branches-angle"));
-    setRandomValue(document.getElementById("branches-width"));
-    setRandomValue(document.getElementById("branches-width-falloff"));
-    setRandomValue(document.getElementById("branches-min-width"));
+    setRandomRange(("branches-length"), 30, 50);
+    setRandomValue("branches-angle");
+    setRandomValue("branches-width");
+    setRandomValue("branches-width-falloff");
+    setRandomValue("branches-min-width");
 
     Run();
 }
@@ -329,22 +333,21 @@ function LoadGlobalPreset()
     document.getElementById("background-col-top").value = preset.backgroundColorTop;
     document.getElementById("background-col-bottom").value = preset.backgroundColorBottom;
     SetOptionValue("growthGrid", "presets", preset.preset);
-    document.getElementById("iterations").value = preset.iterations;
-    document.getElementById("variability").value = preset.variability;
-    document.getElementById("seed").value = preset.seed;
+    SetSliderValue("iterations", preset.iterations);
+    SetSliderValue("seed", preset.seed);
 
     document.getElementById("leaves-col").value = preset.leafColor;
     SetOptionValue("leafShapeGrid", "leaves-type", preset.leafType);
-    document.getElementById("leaves-length").value = preset.leafLength;
-    document.getElementById("leaves-width").value = preset.leafWidth;
-    document.getElementById("leaves-alpha").value = preset.leafAlpha;
+    SetSliderValue("leaves-length", preset.leafLength);
+    SetSliderValue("leaves-width", preset.leafWidth);
+    SetSliderValue("leaves-alpha", preset.leafAlpha);
 
     document.getElementById("branches-col").value = preset.branchColor;
-    document.getElementById("branches-length").value = preset.branchLength;
-    document.getElementById("branches-angle").value = preset.branchAngle;
-    document.getElementById("branches-width").value = preset.branchWidth;
-    document.getElementById("branches-width-falloff").value = preset.branchWidthFalloff;
-    document.getElementById("branches-min-width").value = preset.branchWidthMin;
+    SetSliderValue("branches-length", preset.branchLength);
+    SetSliderValue("branches-angle", preset.branchAngle);
+    SetSliderValue("branches-width", preset.branchWidth);
+    SetSliderValue("branches-width-falloff", preset.branchWidthFalloff);
+    SetSliderValue("branches-min-width", preset.branchWidthMin);
 }
 
 function SetupOptionGrid(gridId, inputId, callback)
@@ -381,6 +384,13 @@ function SetOptionValue(gridId, inputId, value)
     grid.querySelectorAll(".preset").forEach(btn => {
         btn.classList.toggle("active", btn.dataset.value == value);
     });
+}
+
+function SetSliderValue(id, value)
+{
+    const el = document.getElementById(id);
+    el.value = value;
+    SyncSlider(el);
 }
 
 function Run(useUserSentence = false)
@@ -702,6 +712,16 @@ window.addEventListener("resize", (event) => {
     Run();
 })
 
+function SyncSlider(slider)
+{
+    const min = Number(slider.min || 0);
+    const max = Number(slider.max || 100);
+    const val = Number(slider.value);
+
+    const percent = ((val - min) / (max - min)) * 100;
+    slider.style.setProperty("--p", percent + "%");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
 
     const tooltip = document.getElementById("tooltip");
@@ -726,6 +746,15 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     }
+
+    document.querySelectorAll('input[type="range"]').forEach(slider => {
+        SyncSlider(slider);
+
+        slider.addEventListener("input", () => {
+            SyncSlider(slider);
+            OnParamsChanged();
+        });
+    });
 
     attachTooltips();
     SetupOptionGrid("globalPresetGrid", "globalPresets", () => { OnGlobalPresetChanged(); });

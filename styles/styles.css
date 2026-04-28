@@ -71,9 +71,9 @@ canvas {
   max-height: calc(100vh - 120px);
   overflow: auto;
   background: #fffaf5;
-  border: 1px solid #eadfd4;
   border-radius: 18px;
-  padding: 12px;
+  padding: 12px 24px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
 }
 
 #globalPresets {
@@ -136,11 +136,6 @@ input[type="button"] {
 input[type="button"]:hover {
     transform:translateY(-1px);
     box-shadow:0 6px 14px rgba(0,0,0,0.06);
-}
-
-input[type="range"] {
-  width: 100%;
-  accent-color: #d98da3;
 }
 
 input[type="color"] {
@@ -275,7 +270,100 @@ input[type="checkbox"]:checked::after {
   transform: translateX(18px);
 }
 
+/* Sliders */
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 22px;
+    background: transparent;
+    cursor: pointer;
 
+    /* prevents weird compositing issues */
+    isolation: isolate;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 8px;
+    border-radius: 999px;
+
+    background: linear-gradient(
+        90deg,
+        #e9b6c6 0%,
+        #e9b6c6 var(--p, 50%),
+        #f3e7de var(--p, 50%),
+        #f3e7de 100%
+    );
+
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.08);
+}
+
+input[type="range"]::-moz-range-track {
+    height: 8px;
+    border-radius: 999px;
+
+    background: linear-gradient(
+        90deg,
+        #e9b6c6 0%,
+        #e9b6c6 var(--p, 50%),
+        #f3e7de var(--p, 50%),
+        #f3e7de 100%
+    );
+}
+
+/* remove default Firefox fill layer */
+input[type="range"]::-moz-range-progress {
+    background: transparent;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+
+    background: #fff;
+
+    border: 1px solid rgba(160, 100, 120, 0.25);
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+
+    margin-top: -5px;
+
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+input[type="range"]:active::-webkit-slider-thumb {
+    transform: scale(1.15);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.18);
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+
+    background: #fff;
+
+    border: 1px solid rgba(160, 100, 120, 0.25);
+
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+}
+
+input[type="range"]:focus {
+    outline: none;
+}
+
+input[type="range"]:focus-visible::-webkit-slider-thumb {
+    box-shadow:
+        0 0 0 4px rgba(233, 182, 198, 0.35),
+        0 2px 6px rgba(0,0,0,0.12);
+}
+
+
+/* Preset grids */
 .preset-grid{
     display:grid;
     grid-template-columns:1fr 1fr 1fr;
