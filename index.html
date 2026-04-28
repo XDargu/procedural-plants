@@ -6,6 +6,7 @@
 </head>
 
 <body class="grid">
+    <div id="tooltip" class="tooltip"></div>
     <div class="app">
 
     <header class="header">
@@ -54,29 +55,29 @@
             <div class="settings-section">
                 <div class="section-title">Scene</div>
 
-                <label>Background Top</label>
+                <label data-tooltip="Color of the sky at the top of the scene.">Background Top</label>
                 <input type="color" id="background-col-top" value="#ddfafd" oninput="OnParamsChanged()">
 
-                <label>Background Bottom</label>
+                <label data-tooltip="Color of the sky near the ground.">Background Bottom</label>
                 <input type="color" id="background-col-bottom" value="#fecba9" oninput="OnParamsChanged()">
             </div>
 
             <div class="settings-section">
                 <div class="section-title">Growth</div>
 
-                <label>Growth Pattern</label>
+                <label data-tooltip="Selects a predefined growth style that defines how the plant structure evolves.">Growth Pattern</label>
                 <input type="range" id="presets" min="0" max="10" value="1" oninput="OnParamsChanged()">
 
-                <label>Iterations</label>
+                <label data-tooltip="How many times the structure is expanded. Higher values create more complex and detailed plants.">Iterations</label>
                 <input type="range" id="iterations" min="1" max="5" value="3" oninput="OnParamsChanged()">
 
-                <label>Variability</label>
+                <label data-tooltip="Controls randomness in branching angle and length, based on the seed. Low values produce stable, predictable shapes. High values create wild organic growth.">Variability</label>
                 <input type="range" id="variability" min="0.0" max="1.0" value="0.1" step="0.01" oninput="OnParamsChanged()">
 
-                <label>Seed</label>
+                <label data-tooltip="Determines the variability of the generated plant. Same seed always produces the same result.">Seed</label>
                 <input type="range" id="seed" min="0" max="50" value="25" oninput="OnParamsChanged()">
 
-                <label>
+                <label data-tooltip="Animates the generation process step by step.">
                     <input type="checkbox" id="animate" oninput="OnParamsChanged()">
                     Animate
                 </label>
@@ -85,41 +86,41 @@
             <div class="settings-section">
                 <div class="section-title">Leaves</div>
 
-                <label>Color</label>
+                <label data-tooltip="Color of the leaves at the tips of the plant.">Color</label>
                 <input type="color" id="leaves-col" value="#5edb3b" oninput="OnParamsChanged()">
 
-                <label>Shape</label>
+                <label data-tooltip="Controls the shape style of leaves.">Shape</label>
                 <input type="range" id="leaves-type" min="0" max="2" value="0" oninput="OnParamsChanged()">
 
-                <label>Alpha</label>
+                <label data-tooltip="Transparency of leaves.">Transparency</label>
                 <input type="range" id="leaves-alpha" min="0.1" max="1.0" value="0.75" step="0.01" oninput="OnParamsChanged()">
 
-                <label>Length</label>
+                <label data-tooltip="Size of individual leaves along their main axis.">Length</label>
                 <input type="range" id="leaves-length" min="0.5" max="20" value="10.0" oninput="OnParamsChanged()">
 
-                <label>Width</label>
+                <label data-tooltip="Thickness of leaves perpendicular to their growth direction.">Width</label>
                 <input type="range" id="leaves-width" min="0.5" max="20" value="5.0" oninput="OnParamsChanged()">
             </div>
 
             <div class="settings-section">
                 <div class="section-title">Branches</div>
 
-                <label>Color</label>
+                <label data-tooltip="Color of the branches.">Color</label>
                 <input type="color" id="branches-col" value="#7d5010" oninput="OnParamsChanged()">
 
-                <label>Length</label>
+                <label data-tooltip="Length of the initial branch segment before it continues or splits.">Length</label>
                 <input type="range" id="branches-length" min="0.5" max="100" value="30.0" oninput="OnParamsChanged()">
 
-                <label>Angle</label>
+                <label data-tooltip="Angle between branches. Small angles create dense upward growth, large angles create spread-out shapes.">Angle</label>
                 <input type="range" id="branches-angle" min="0.1" max="90.0" value="22.5" step="0.1" oninput="OnParamsChanged()">
 
-                <label>Width</label>
+                <label data-tooltip="Initial thickness of the trunk and main branches.">Width</label>
                 <input type="range" id="branches-width" min="0.1" max="45.0" value="6.0" step="0.1" oninput="OnParamsChanged()">
 
-                <label>Width Falloff</label>
+                <label data-tooltip="How quickly branches thin as they grow.">Width Falloff</label>
                 <input type="range" id="branches-width-falloff" min="0.1" max="1.0" value="0.7" step="0.01" oninput="OnParamsChanged()">
 
-                <label>Min Width</label>
+                <label data-tooltip="Minimum thickness a branch can reach.">Min Width</label>
                 <input type="range" id="branches-min-width" min="0.1" max="10.0" value="0.3" step="0.1" oninput="OnParamsChanged()">
             </div>
 

@@ -661,9 +661,6 @@ function AdaptCanvas()
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
-
-
-
 window.addEventListener("resize", (event) => {
     AdaptCanvas();
     Run();
@@ -688,6 +685,31 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll(".preset").forEach(p => p.classList.remove("active"));
         btn.classList.add("active");
     });
+
+    const tooltip = document.getElementById("tooltip");
+
+    document.addEventListener("mousemove", (e) => {
+        if (tooltip.classList.contains("show")) {
+            tooltip.style.left = (e.clientX + 12) + "px";
+            tooltip.style.top = (e.clientY + 12) + "px";
+        }
+    });
+
+    function attachTooltips() {
+        document.querySelectorAll("[data-tooltip]").forEach(el => {
+
+            el.addEventListener("mouseenter", (e) => {
+                tooltip.textContent = el.dataset.tooltip;
+                tooltip.classList.add("show");
+            });
+
+            el.addEventListener("mouseleave", () => {
+                tooltip.classList.remove("show");
+            });
+        });
+    }
+
+    attachTooltips();
 
     AdaptCanvas();
     LoadGlobalPreset();
