@@ -452,3 +452,10 @@ input[type="range"]:focus-visible::-webkit-slider-thumb {
 .control-row + .control-row {
   margin-top: 4px;
 }
+
+#randomimze {
+    font-weight: bold;
+    color: white;
+    background: #3F5EFB;
+    background: radial-gradient(circle, rgb(226 111 255) 0%, rgb(201 161 255) 100%);
+}
