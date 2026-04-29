@@ -393,7 +393,16 @@ function SetSliderValue(id, value)
     SyncSlider(el);
 }
 
+let timeout;
 function Run(useUserSentence = false)
+{
+    if (timeout)
+        clearTimeout(timeout);
+
+    timeout = setTimeout(() => { RunSystem(useUserSentence); }, 1);
+}
+
+function RunSystem(useUserSentence = false)
 {
     let config = {};
     // Params
