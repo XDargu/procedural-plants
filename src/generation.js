@@ -444,7 +444,7 @@ function RunSystem(useUserSentence = false)
         ApplyRules(config);
     }
 
-    const iterator = Render(config, !useUserSentence);
+    const iterator = Render(config, !useUserSentence, config.isAnimated);
 
     clearTimeout(lastTimeout);
 
@@ -463,7 +463,10 @@ function RunSystem(useUserSentence = false)
     }
     else
     {
-        while (!iterator.next().done);
+        // No animation means no iteration
+        iterator.next();
+
+        document.getElementById("sentence").textContent = config.sentence;
     }
     
 }
@@ -523,6 +526,29 @@ function ApplyRules(config)
     config.sentence = currentSentence;
 }
 
+// Precompute leaf paths
+const leaf0 = new Path2D();
+leaf0.moveTo(0, 0);
+leaf0.lineTo(1, -1);
+leaf0.lineTo(0, -4);
+leaf0.lineTo(-1, -1);
+leaf0.lineTo(0, 0);
+leaf0.closePath();
+
+const leaf1 = new Path2D();
+leaf1.arc(0, -2, 2, 0, 2 * Math.PI);
+leaf1.closePath();
+
+const leaf2 = new Path2D();
+leaf2.moveTo(0, 0);
+leaf2.lineTo(1, -1);
+leaf2.lineTo(1, -4);
+leaf2.lineTo(0, -5);
+leaf2.lineTo(-1, -4);
+leaf2.lineTo(-1, -1);
+leaf2.lineTo(0, 0);
+leaf2.closePath();
+
 function RenderLeaf(ctx, config)
 {
     ctx.fillStyle = config.leafColor;
@@ -540,35 +566,15 @@ function RenderLeaf(ctx, config)
 
     if (config.leafType == 0)
     {
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(1, -1);
-        ctx.lineTo(0, -4);
-        ctx.lineTo(-1, -1);
-        ctx.lineTo(0, 0);
-        ctx.closePath();
-        ctx.fill();
+        ctx.fill(leaf0);
     }
     else if (config.leafType == 1)
     {
-        ctx.beginPath();
-        ctx.arc(0, -2, 2, 0, 2 * Math.PI);
-        ctx.closePath();
-        ctx.fill();
+        ctx.fill(leaf1);
     }
     else if (config.leafType == 2)
     {
-        ctx.beginPath();
-        ctx.moveTo(0, 0);
-        ctx.lineTo(1, -1);
-        ctx.lineTo(1, -4);
-        ctx.lineTo(0, -5);
-        ctx.lineTo(-1, -4);
-        ctx.lineTo(-1, -1);
-        ctx.lineTo(0, 0);
-        ctx.closePath();
-        ctx.fill();
-
+        ctx.fill(leaf2);
         ctx.fillRect(0, 0, 0.25, -5);
     }
 }
@@ -585,8 +591,9 @@ function RenderBranch(ctx, startWidth, endWidth, length)
     ctx.fill();
 }
 
+const textArea = document.getElementById("sentence");
 
-function* Render(config, updateSentence = false)
+function* Render(config, updateSentence = false, isAnimating = false)
 {
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
@@ -596,7 +603,6 @@ function* Render(config, updateSentence = false)
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     // Background
-    
     const grad = ctx.createLinearGradient(0, 0, 0, canvas.height * 0.7);
     grad.addColorStop(0, config.backgroundColorTop);
     grad.addColorStop(1, config.backgroundColorBottom);
@@ -606,8 +612,7 @@ function* Render(config, updateSentence = false)
 
     ctx.transform(1, 0, 0, 1, canvas.width / 2, canvas.height);
 
-    const textArea = document.getElementById("sentence");
-    if (updateSentence)
+    if (updateSentence && isAnimating)
         textArea.value = "";
 
     const stateStack = [];
@@ -618,51 +623,65 @@ function* Render(config, updateSentence = false)
     // Scale to keep the same relative size
     const scale = canvas.width / 800;
     ctx.scale(scale, scale);
+
+    const fallOff = (1 - config.branchWidthFalloff);
+    const widthDecay = Math.pow(fallOff, 0.1);
+
+    const angleRad = config.branchAngle * Math.PI / 180;
     
     for (let i=0; i<config.sentence.length; ++i)
     {
-        yield;
-        const c = config.sentence[i];
+        if (isAnimating) yield;
+        
+        const c = config.sentence.charCodeAt(i);
 
-        if (updateSentence)
+        if (updateSentence && isAnimating)
             textArea.value += c;
 
-        if (c == 'F')
+        switch(c)
         {
-            ctx.fillStyle = config.branchColor;
-            const startWidth = state.width;
-            const fallOff = (1 - config.branchWidthFalloff);
-            const endWidth = Math.max(startWidth * Math.pow(fallOff, 0.1), config.branchWidthMin);
-            state.width = endWidth;
+            case 70: // F
+            {
+                ctx.fillStyle = config.branchColor;
+                const startWidth = state.width;
+                const endWidth = Math.max(startWidth * widthDecay, config.branchWidthMin);
+                state.width = endWidth;
 
-            const lengthChange = config.rng.nextFloatRange(1 - config.variability, 1 + config.variability);
-            const length = config.branchLength * lengthChange;
-            RenderBranch(ctx, startWidth, endWidth,length);
-            ctx.transform(1, 0, 0, 1, 0, -length);
-        }
-        else if (c == '+')
-        {
-            const rotChange = config.rng.nextFloatRange(1 - config.variability, 1 + config.variability);
-            ctx.rotate(config.branchAngle * Math.PI / 180 * rotChange);
-        }
-        else if (c == '-')
-        {
-            const rotChange = config.rng.nextFloatRange(1 - config.variability, 1 + config.variability);
-            ctx.rotate(-config.branchAngle * Math.PI / 180 * rotChange);
-        }
-        else if (c == '[')
-        {
-            ctx.save();
-            stateStack.push({...state}); // Deep copy of state
-        }
-        else if (c == ']')
-        {
-            RenderLeaf(ctx, config);
-            ctx.restore();
-            state = stateStack.pop();
+                const lengthChange = config.rng.nextFloatRange(1 - config.variability, 1 + config.variability);
+                const length = config.branchLength * lengthChange;
+                RenderBranch(ctx, startWidth, endWidth,length);
+                ctx.transform(1, 0, 0, 1, 0, -length);
+                break;
+            }
+            case 43: // +
+            {
+                const rotChange = config.rng.nextFloatRange(1 - config.variability, 1 + config.variability);
+                ctx.rotate(angleRad * rotChange);
+                break;
+            }
+            case 45: // -
+            {
+                const rotChange = config.rng.nextFloatRange(1 - config.variability, 1 + config.variability);
+                ctx.rotate(-angleRad * rotChange);
+                break;
+            }
+            case 91: // [
+            {
+                ctx.save();
+                stateStack.push({...state}); // Deep copy of state
+                break;
+            }
+            case 93: // ]
+            {
+                RenderLeaf(ctx, config);
+                ctx.restore();
+                state = stateStack.pop();
+                break;
+            }
         }
     }
 }
+
 function MuteColor(hex)
 {
     // parse via temp element
@@ -700,8 +719,6 @@ function MuteColor(hex)
     }
     
     l = Math.max(0.9, l);
-
-    console.log(h)
 
     return `hsl(${h}, ${s * 100}%, ${l * 100}%)`;
 }
