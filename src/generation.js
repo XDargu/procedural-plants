@@ -654,9 +654,61 @@ function* Render(config, updateSentence = false)
         }
     }
 }
+function MuteColor(hex)
+{
+    // parse via temp element
+    const temp = document.createElement("div");
+    temp.style.color = hex;
+    document.body.appendChild(temp);
+
+    // Hacky way of getting the RGB via DOM
+    const rgb = getComputedStyle(temp).color;
+    document.body.removeChild(temp);
+
+    const [r, g, b] = rgb.match(/\d+/g).map(Number);
+
+    // convert to HSL
+    const r1 = r / 255, g1 = g / 255, b1 = b / 255;
+    const max = Math.max(r1, g1, b1), min = Math.min(r1, g1, b1);
+    let h = 0;
+    let s = 0;
+    let l = (max + min) / 2;
+
+    const d = max - min;
+
+    if (d !== 0)
+    {
+        s = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1));
+
+        if (max === r1) h = ((g1 - b1) / d) % 6;
+        else if (max === g1) h = (b1 - r1) / d + 2;
+        else h = (r1 - g1) / d + 4;
+
+        h *= 60;
+        if (h < 0) h += 360;
+
+        s = 0.5;
+    }
+    
+    l = Math.max(0.9, l);
+
+    console.log(h)
+
+    return `hsl(${h}, ${s * 100}%, ${l * 100}%)`;
+}
+
+function UpdateThemeFromBackground()
+{
+    const top = document.getElementById("background-col-top").value;
+    const bottom = document.getElementById("background-col-bottom").value;
+
+    document.documentElement.style.setProperty("--bg-top",  MuteColor(top));
+    document.documentElement.style.setProperty("--bg-bottom", MuteColor(bottom));
+}
 
 function OnParamsChanged()
 {
+    UpdateThemeFromBackground();
     Run();
 }
 
@@ -668,6 +720,7 @@ function OnSentenceChanged()
 function OnGlobalPresetChanged()
 {
     LoadGlobalPreset();
+    UpdateThemeFromBackground();
     Run();
 }
 
@@ -686,7 +739,7 @@ function AdaptCanvas()
 
     if (window.innerWidth > window.innerHeight)
     {
-        size = Math.min(window.innerHeight * 0.85, 650);
+        size = Math.min(window.innerHeight * 0.85, 750);
     }
     else
     {
@@ -763,5 +816,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     AdaptCanvas();
     LoadGlobalPreset();
+    UpdateThemeFromBackground();
     Run();
 });

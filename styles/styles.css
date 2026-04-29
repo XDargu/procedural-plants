@@ -1,3 +1,11 @@
+:root {
+  --bg-top: #ddfafd;
+  --bg-bottom: #fecba9;
+
+  --text: #4a3f36;
+  --text-faint: #786b61;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -10,6 +18,7 @@ body {
   overflow: hidden;
   font-family: system-ui;
   background: #f7f1ea;
+  background: linear-gradient(var(--bg-top), var(--bg-bottom));
   color: #4a3f36;
 }
 
@@ -33,7 +42,7 @@ body {
 .header p {
   margin: 4px 0;
   font-size: 13px;
-  color: #8b7a6d;
+  color: var(--text-faint);
 }
 
 .workspace {
@@ -103,7 +112,8 @@ label {
   display: block;
   font-size: 12px;
   margin: 6px 0 2px;
-  color: #8a776a;
+  color: var(--text);
+  line-height: 1.2;
 }
 
 label:hover {
@@ -215,7 +225,7 @@ textarea {
   font-size: 14px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #a08f82;
+  color: var(--text-faint);
   margin: 6px 0 10px;
 }
 
@@ -393,7 +403,7 @@ input[type="range"]:focus-visible::-webkit-slider-thumb {
 }
 
 .preset{
-    color: #373432;
+    color: var(--text);
     padding:10px;
     border-radius:12px;
     border:1px solid #eadfd4;
@@ -429,13 +439,6 @@ input[type="range"]:focus-visible::-webkit-slider-thumb {
   gap: 12px;
 
   padding: 6px 0;
-}
-
-/* label alignment */
-.control-row label {
-  font-size: 12px;
-  color: #8a776a;
-  line-height: 1.2;
 }
 
 /* mobile stack */
