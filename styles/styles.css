@@ -461,11 +461,13 @@ input[type="range"]:focus-visible::-webkit-slider-thumb {
 }
 
 .header-links {
-  margin-top: 6px;
-  min-height: 24px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
 }
 
-.header-links a {
+.header-links a,
+.header-links button {
     font-size: 12px;
     color: var(--text-faint);
     text-decoration: none;
@@ -475,9 +477,11 @@ input[type="range"]:focus-visible::-webkit-slider-thumb {
     backdrop-filter: blur(6px);
     transition: all 0.15s ease;
     border: 1px solid transparent;
+    cursor: pointer;
 }
 
-.header-links a:hover {
+.header-links a:hover,
+.header-links button:hover {
     color: var(--text);
     border-color: rgba(160, 143, 130, 0.35);
 
@@ -495,4 +499,53 @@ input[type="range"]:focus-visible::-webkit-slider-thumb {
         right: 12px;
         z-index: 1000;
     }
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    width: min(520px, 90vw);
+    background: rgba(255, 250, 245, 0.9);
+    backdrop-filter: blur(10px);
+
+    border: 1px solid #eadfd4;
+    border-radius: 16px;
+
+    padding: 18px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+
+    color: var(--text);
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    font-size: 18px;
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    font-size: 16px;
+}
+
+.modal-content p,
+.modal-content ul {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-faint);
+}
+
+.modal-content button {
+    margin-top: 12px;
 }

@@ -3,20 +3,55 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles/styles.css">
+
+    <title>L-System Garden</title>
+    <meta name="description" content="Small interactive demo that shows plant generation using L-Systems.">
+    <meta name="theme-color" content="#f7f1ea">
+
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 
 <body class="grid">
     <div id="tooltip" class="tooltip"></div>
+    <div id="helpModal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Welcome to the L-System Garden!</h2>
+
+            <p>This is a small demo that shows how to generate plants using L-Systems, a simple set of rules that creates complex, natural-looking growth.</p>
+
+            <p>Pick one of the existing examples, or play around with the settings to create new types of plants.</p>
+
+            <p>Hover over each setting (or tap on touch devices) to learn what each control does.</p>
+            
+            <p>If you are feeling daring, you can manually modify the <b>Raw System</b> text that codifies the L-System rules:</p>
+
+            <ul>
+                <li><b>F</b> draw forward (a branch segment)</li>
+                <li><b>+</b> turn right</li>
+                <li><b>-</b> turn left</li>
+                <li><b>[</b> save state (start a branch)</li>
+                <li><b>]</b> restore state (return to previous branch)</li>
+            </ul>
+
+            <p>Repeating the rules over and over creates complex fractal shapes, like plants!</p>
+
+            <p>Happy gardening!</p>
+
+            <input type="button" value="Got it!" onclick="CloseHelp()">
+        </div>
+    </div>
     <div class="app">
 
     <header class="header">
-        <h1>Generative Plants</h1>
+        <h1>L-System Garden</h1>
         <p>Grow your own procedural trees with L-systems. Have fun!</p>
 
         <div class="header-links">
             <a href="https://danielarmesto.com#personal-projects" target="_blank" rel="noopener noreferrer">
                 More cool experiments in my portfolio!
             </a>
+            <button onclick="OnShare()">Share</button>
+            <button onclick="OpenHelp()">Help</button>
         </div>
     </header>
 

@@ -845,3 +845,25 @@ document.addEventListener("DOMContentLoaded", () => {
     UpdateThemeFromBackground();
     Run();
 });
+
+function OnShare() {
+    const url = window.location.href;
+
+    if (navigator.share) {
+        navigator.share({
+            title: "Generative Plants",
+            text: "Grow your own procedural trees with L-systems. Have fun!",
+            url: url
+        });
+    } else {
+        navigator.clipboard.writeText(url);
+    }
+}
+
+function OpenHelp() {
+    document.getElementById("helpModal").classList.remove("hidden");
+}
+
+function CloseHelp() {
+    document.getElementById("helpModal").classList.add("hidden");
+}
