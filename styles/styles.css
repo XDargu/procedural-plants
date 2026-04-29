@@ -459,3 +459,40 @@ input[type="range"]:focus-visible::-webkit-slider-thumb {
     background: #3F5EFB;
     background: radial-gradient(circle, rgb(226 111 255) 0%, rgb(201 161 255) 100%);
 }
+
+.header-links {
+  margin-top: 6px;
+  min-height: 24px;
+}
+
+.header-links a {
+    font-size: 12px;
+    color: var(--text-faint);
+    text-decoration: none;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 34%);
+    backdrop-filter: blur(6px);
+    transition: all 0.15s ease;
+    border: 1px solid transparent;
+}
+
+.header-links a:hover {
+    color: var(--text);
+    border-color: rgba(160, 143, 130, 0.35);
+
+    background: rgb(255 255 255 / 50%);
+    transform: translateY(-1px);
+
+    box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+}
+
+@media (min-width: 900px) {
+    .header-links
+    {
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        z-index: 1000;
+    }
+}
